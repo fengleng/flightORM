@@ -1,7 +1,6 @@
 package flightORM
 
 import (
-	"encoding/json"
 	"github.com/fengleng/flight/sqlparser/sqlparser"
 	"strconv"
 	"testing"
@@ -12,21 +11,26 @@ func TestCopy(t *testing.T) {
 	var sli = make([]byte, 0, 8)
 	sli = strconv.AppendInt(sli, 9, 10)
 
-	v := &sqlparser.Where{Type: sqlparser.WhereStr,
+	v := sqlparser.Where{Type: sqlparser.WhereStr,
 		Expr: &sqlparser.ComparisonExpr{
 			Left:     &sqlparser.ColName{Name: sqlparser.NewColIdent("id")},
 			Right:    sqlparser.NewIntVal(sli),
 			Operator: sqlparser.EqualStr},
 	}
 
-	t.Log(sqlparser.String(v))
-	var vv = &sqlparser.Where{}
-	//err := Copy(vv, v)
+	v2 := v
+	v2.Type = sqlparser.HavingStr
 
-	hh, err := json.Marshal(vv)
-	err = json.Unmarshal(hh, vv)
-	t.Log(err)
-
-	//clone
-	t.Log(vv)
+	t.Log(sqlparser.String(&v))
+	t.Log(sqlparser.String(&v2))
+	//t.Log(sqlparser.String(v2))
+	//var vv = &sqlparser.Where{}
+	////err := Copy(vv, v)
+	//
+	//hh, err := json.Marshal(vv)
+	//err = json.Unmarshal(hh, vv)
+	//t.Log(err)
+	//
+	////clone
+	//t.Log(vv)
 }
